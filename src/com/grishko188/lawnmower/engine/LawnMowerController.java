@@ -9,16 +9,18 @@ import com.grishko188.lawnmower.engine.models.utils.Point;
 
 import java.util.List;
 import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.*;
 
 public class LawnMowerController {
 
     private Lawn lawn;
     private Queue<Mower> mowers;
+    private ExecutorService executor;
 
     public LawnMowerController(int lawnWidth, int lawnHeight) {
         lawn = new Lawn(lawnWidth, lawnHeight);
         mowers = new LinkedBlockingQueue<>();
+        executor = Executors.newSingleThreadExecutor();
     }
 
     public void addMower(Mower mower) {
@@ -28,10 +30,11 @@ public class LawnMowerController {
     public void mow(List<Command> commands) {
         Mower mower = mowers.poll();
         schedule(mower, commands);
+        shutdownIfEmpty();
     }
 
     private void schedule(Mower mower, List<Command> commands) {
-        new Thread(() -> execute(mower, commands)).start();
+        executor.submit(() -> execute(mower, commands));
     }
 
     private synchronized void execute(Mower mower, List<Command> commands) {
@@ -62,5 +65,11 @@ public class LawnMowerController {
 
     private Point processMoveCommand(Mower mower) {
         return CommandsProcessor.move(mower.getPosition(), mower.getDirection());
+    }
+
+    private void shutdownIfEmpty() {
+        if (mowers.isEmpty()) {
+            executor.shutdown();
+        }
     }
 }
