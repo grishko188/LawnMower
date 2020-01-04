@@ -1,7 +1,5 @@
 package com.grishko188.lawnmower.engine.models;
 
-import com.grishko188.lawnmower.engine.models.utils.Point;
-
 public class Lawn {
 
     private int width;

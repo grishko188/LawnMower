@@ -1,9 +1,9 @@
 package com.grishko188.lawnmower.engine.parser;
 
 import com.grishko188.lawnmower.engine.errors.IncorrectInputFileException;
-import com.grishko188.lawnmower.engine.models.utils.Command;
-import com.grishko188.lawnmower.engine.models.utils.Direction;
-import com.grishko188.lawnmower.engine.models.utils.Point;
+import com.grishko188.lawnmower.engine.models.Command;
+import com.grishko188.lawnmower.engine.models.Direction;
+import com.grishko188.lawnmower.engine.models.Point;
 import com.grishko188.lawnmower.engine.parser.models.Meta;
 import com.grishko188.lawnmower.engine.parser.models.MowerMeta;
 
@@ -31,7 +31,7 @@ public class InputParser {
             meta.setLawnHeight(Integer.parseInt(digits[1]));
         } catch (NumberFormatException exception) {
             throw new IncorrectInputFileException(
-                    "Lawn size should be value of integer. Original error:{" + exception.getMessage() + "}"
+                    "Lawn size should be value of integer. Original error:{" + exception + "}"
             );
         }
     }
@@ -56,7 +56,7 @@ public class InputParser {
                 position = Point.of(Integer.parseInt(digits[0]), Integer.parseInt(digits[1]));
             } catch (NumberFormatException exception) {
                 throw new IncorrectInputFileException(
-                        "Mower position should be value of integer. Original error:{" + exception.getMessage() + "}"
+                        "Mower position should be value of integer. Original error:{" + exception + "}"
                 );
             }
 

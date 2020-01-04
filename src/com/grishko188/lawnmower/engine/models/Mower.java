@@ -1,7 +1,5 @@
 package com.grishko188.lawnmower.engine.models;
 
-import com.grishko188.lawnmower.engine.models.utils.Direction;
-import com.grishko188.lawnmower.engine.models.utils.Point;
 import com.sun.istack.internal.NotNull;
 
 public class Mower {

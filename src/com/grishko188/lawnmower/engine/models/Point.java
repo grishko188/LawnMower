@@ -1,4 +1,6 @@
-package com.grishko188.lawnmower.engine.models.utils;
+package com.grishko188.lawnmower.engine.models;
+
+import java.util.Objects;
 
 public class Point {
     private int x;
@@ -24,5 +26,19 @@ public class Point {
 
     public static Point of(int x, int y) {
         return new Point(x, y);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Point point = (Point) o;
+        return x == point.x &&
+                y == point.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 }

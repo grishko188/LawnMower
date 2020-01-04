@@ -2,12 +2,14 @@ package com.grishko188.lawnmower.engine;
 
 import com.grishko188.lawnmower.engine.models.Lawn;
 import com.grishko188.lawnmower.engine.models.Mower;
-import com.grishko188.lawnmower.engine.models.utils.Command;
-import com.grishko188.lawnmower.engine.models.utils.CommandsProcessor;
-import com.grishko188.lawnmower.engine.models.utils.Direction;
-import com.grishko188.lawnmower.engine.models.utils.Point;
+import com.grishko188.lawnmower.engine.models.Command;
+import com.grishko188.lawnmower.engine.models.Direction;
+import com.grishko188.lawnmower.engine.models.Point;
+import com.sun.istack.internal.NotNull;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.*;
 
@@ -15,19 +17,22 @@ public class LawnMowerController {
 
     private Lawn lawn;
     private Queue<Mower> mowers;
+    private Map<Mower, Callback> callbacks;
     private ExecutorService executor;
 
     public LawnMowerController(int lawnWidth, int lawnHeight) {
         lawn = new Lawn(lawnWidth, lawnHeight);
         mowers = new LinkedBlockingQueue<>();
+        callbacks = new HashMap<>();
         executor = Executors.newSingleThreadExecutor();
     }
 
-    public void addMower(Mower mower) {
+    public void addMower(@NotNull Mower mower, Callback callback) {
         this.mowers.add(mower);
+        this.callbacks.put(mower, callback);
     }
 
-    public void mow(List<Command> commands) {
+    public void mow(@NotNull List<Command> commands) {
         Mower mower = mowers.poll();
         schedule(mower, commands);
         shutdownIfEmpty();
@@ -41,7 +46,7 @@ public class LawnMowerController {
         for (Command command : commands) {
             processCommand(mower, command);
         }
-        System.out.println(mower.getState());
+        callbacks.remove(mower).onMowFinished(mower.getState());
     }
 
     private void processCommand(Mower mower, Command command) {
@@ -71,5 +76,9 @@ public class LawnMowerController {
         if (mowers.isEmpty()) {
             executor.shutdown();
         }
+    }
+
+    public interface Callback {
+        void onMowFinished(String output);
     }
 }

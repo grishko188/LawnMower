@@ -1,8 +1,8 @@
 package com.grishko188.lawnmower.engine.parser.models;
 
-import com.grishko188.lawnmower.engine.models.utils.Command;
-import com.grishko188.lawnmower.engine.models.utils.Direction;
-import com.grishko188.lawnmower.engine.models.utils.Point;
+import com.grishko188.lawnmower.engine.models.Command;
+import com.grishko188.lawnmower.engine.models.Direction;
+import com.grishko188.lawnmower.engine.models.Point;
 import com.sun.istack.internal.NotNull;
 
 import java.util.List;

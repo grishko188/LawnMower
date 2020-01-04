@@ -1,4 +1,4 @@
-package com.grishko188.lawnmower.engine.models.utils;
+package com.grishko188.lawnmower.engine.models;
 
 import com.grishko188.lawnmower.engine.errors.InvalidCommandException;
 import com.sun.istack.internal.NotNull;

@@ -14,26 +14,23 @@ import java.nio.file.Paths;
 public class Main {
 
     public static void main(String[] args) {
-        if (args.length > 0) {
-            try {
-                String input = readAllBytes(args[0]);
-                System.out.println("---- Input ----\n" + input + "\n---------------");
 
-                Meta meta = new InputParser().parse(input);
-                LawnMowerController controller = new LawnMowerController(meta.getLawnWidth(), meta.getLawnHeight());
+        if (args == null || args.length == 0)
+            throw new IllegalArgumentException("Arguments are not passed");
 
-                for (MowerMeta mowerMeta : meta.getMowerMetaData()) {
-                    controller.addMower(new Mower(mowerMeta.getPosition(), mowerMeta.getDirection()));
-                }
+        String input = readAllBytes(args[0]);
+        System.out.println("---- Input ----\n" + input + "\n---------------");
 
-                for (MowerMeta mowerMeta : meta.getMowerMetaData()) {
-                    controller.mow(mowerMeta.getCommands());
-                }
-            } catch (Throwable error) {
-                System.out.println("Unexpected error:\n" + error.toString());
-            }
-        } else {
-            System.out.println("Input file not provided");
+        Meta meta = new InputParser().parse(input);
+        LawnMowerController controller = new LawnMowerController(meta.getLawnWidth(), meta.getLawnHeight());
+
+        for (MowerMeta mowerMeta : meta.getMowerMetaData()) {
+            Mower mower = new Mower(mowerMeta.getPosition(), mowerMeta.getDirection());
+            controller.addMower(mower, System.out::println);
+        }
+
+        for (MowerMeta mowerMeta : meta.getMowerMetaData()) {
+            controller.mow(mowerMeta.getCommands());
         }
     }
 

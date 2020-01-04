@@ -1,6 +1,6 @@
 package com.grishko188.lawnmower.engine.errors;
 
-import com.grishko188.lawnmower.engine.models.utils.Command;
+import com.grishko188.lawnmower.engine.models.Command;
 
 public class UnsupportedCommandException extends RuntimeException {
 

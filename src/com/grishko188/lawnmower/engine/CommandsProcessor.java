@@ -1,7 +1,10 @@
-package com.grishko188.lawnmower.engine.models.utils;
+package com.grishko188.lawnmower.engine;
 
 import com.grishko188.lawnmower.engine.errors.UnsupportedCommandException;
 import com.grishko188.lawnmower.engine.errors.UnsupportedDirectionException;
+import com.grishko188.lawnmower.engine.models.Command;
+import com.grishko188.lawnmower.engine.models.Direction;
+import com.grishko188.lawnmower.engine.models.Point;
 import com.sun.istack.internal.NotNull;
 
 public class CommandsProcessor {
