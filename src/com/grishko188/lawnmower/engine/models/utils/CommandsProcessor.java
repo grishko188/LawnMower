@@ -1,15 +1,19 @@
 package com.grishko188.lawnmower.engine.models.utils;
 
+import com.grishko188.lawnmower.engine.errors.UnsupportedCommandException;
+import com.grishko188.lawnmower.engine.errors.UnsupportedDirectionException;
+import com.sun.istack.internal.NotNull;
+
 public class CommandsProcessor {
 
-    public static Direction rotate(Direction origin, Command command) {
+    public static Direction rotate(@NotNull Direction origin, @NotNull Command command) {
         switch (command) {
             case ROTATE_LEFT:
                 return rotateLeft(origin);
             case ROTATE_RIGHT:
                 return rotateRight(origin);
             default:
-                throw new IllegalArgumentException("Unknown command for rotation: " + command);
+                throw new UnsupportedCommandException(command);
         }
     }
 
@@ -24,7 +28,7 @@ public class CommandsProcessor {
             case EAST:
                 return Point.of(origin.getX() + 1, origin.getY());
             default:
-                throw new IllegalArgumentException("Unknown direction: " + origin);
+                throw new UnsupportedDirectionException(direction);
         }
     }
 
@@ -39,7 +43,7 @@ public class CommandsProcessor {
             case EAST:
                 return Direction.NORTH;
             default:
-                throw new IllegalArgumentException("Unknown direction: " + origin);
+                throw new UnsupportedDirectionException(origin);
         }
     }
 
@@ -54,7 +58,7 @@ public class CommandsProcessor {
             case WEST:
                 return Direction.NORTH;
             default:
-                throw new IllegalArgumentException("Unknown direction: " + origin);
+                throw new UnsupportedDirectionException(origin);
         }
     }
 }

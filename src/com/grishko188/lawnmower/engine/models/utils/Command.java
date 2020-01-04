@@ -1,5 +1,6 @@
 package com.grishko188.lawnmower.engine.models.utils;
 
+import com.grishko188.lawnmower.engine.errors.InvalidCommandException;
 import com.sun.istack.internal.NotNull;
 
 public enum Command {
@@ -22,6 +23,6 @@ public enum Command {
             if (command.key.equalsIgnoreCase(key))
                 return command;
         }
-        throw new IllegalStateException("Invalid Direction key");
+        throw new InvalidCommandException(key);
     }
 }

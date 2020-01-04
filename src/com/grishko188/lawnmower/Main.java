@@ -1,6 +1,7 @@
 package com.grishko188.lawnmower;
 
 import com.grishko188.lawnmower.engine.LawnMowerController;
+import com.grishko188.lawnmower.engine.errors.IncorrectInputFileException;
 import com.grishko188.lawnmower.engine.models.Mower;
 import com.grishko188.lawnmower.engine.parser.InputParser;
 import com.grishko188.lawnmower.engine.parser.models.Meta;
@@ -14,9 +15,10 @@ public class Main {
 
     public static void main(String[] args) {
         if (args.length > 0) {
-            String input = readAllBytes(args[0]);
-            System.out.println("---- Input ----\n" + input + "\n---------------");
             try {
+                String input = readAllBytes(args[0]);
+                System.out.println("---- Input ----\n" + input + "\n---------------");
+
                 Meta meta = new InputParser().parse(input);
                 LawnMowerController controller = new LawnMowerController(meta.getLawnWidth(), meta.getLawnHeight());
 
@@ -28,7 +30,7 @@ public class Main {
                     controller.mow(mowerMeta.getCommands());
                 }
             } catch (Throwable error) {
-                System.out.println(error.toString());
+                System.out.println("Unexpected error:\n" + error.toString());
             }
         } else {
             System.out.println("Input file not provided");
@@ -36,12 +38,10 @@ public class Main {
     }
 
     private static String readAllBytes(String filePath) {
-        String content = "";
         try {
-            content = new String(Files.readAllBytes(Paths.get(filePath)));
+            return new String(Files.readAllBytes(Paths.get(filePath)));
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IncorrectInputFileException("Cannot read input file. Path: {" + filePath + "}");
         }
-        return content;
     }
 }

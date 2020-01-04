@@ -1,5 +1,6 @@
 package com.grishko188.lawnmower.engine.models.utils;
 
+import com.grishko188.lawnmower.engine.errors.InvalidDirectionException;
 import com.sun.istack.internal.NotNull;
 
 public enum Direction {
@@ -22,6 +23,6 @@ public enum Direction {
             if (direction.key.equalsIgnoreCase(key))
                 return direction;
         }
-        throw new IllegalStateException("Invalid Direction key");
+        throw new InvalidDirectionException(key);
     }
 }

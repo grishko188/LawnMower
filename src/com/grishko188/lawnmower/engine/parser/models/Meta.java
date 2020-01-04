@@ -1,12 +1,13 @@
 package com.grishko188.lawnmower.engine.parser.models;
 
-import java.util.ArrayList;
+import com.sun.istack.internal.NotNull;
+
 import java.util.List;
 
 public class Meta {
-
     private int lawnWidth;
     private int lawnHeight;
+    @NotNull
     private List<MowerMeta> mowerMetaData;
 
     public void setLawnWidth(int lawnWidth) {
@@ -17,6 +18,7 @@ public class Meta {
         this.lawnHeight = lawnHeight;
     }
 
+    @NotNull
     public void setMowerMetaData(List<MowerMeta> mowerMetaData) {
         this.mowerMetaData = mowerMetaData;
     }
@@ -29,6 +31,7 @@ public class Meta {
         return lawnHeight;
     }
 
+    @NotNull
     public List<MowerMeta> getMowerMetaData() {
         return mowerMetaData;
     }

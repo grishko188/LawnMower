@@ -1,5 +1,6 @@
 package com.grishko188.lawnmower.engine.parser;
 
+import com.grishko188.lawnmower.engine.errors.IncorrectInputFileException;
 import com.grishko188.lawnmower.engine.models.utils.Command;
 import com.grishko188.lawnmower.engine.models.utils.Direction;
 import com.grishko188.lawnmower.engine.models.utils.Point;
@@ -23,8 +24,16 @@ public class InputParser {
 
     private void parseLawnSize(Meta meta, String sizeInput) {
         String[] digits = sizeInput.split(" ");
-        meta.setLawnWidth(Integer.parseInt(digits[0]));
-        meta.setLawnHeight(Integer.parseInt(digits[1]));
+        if (digits.length != 2)
+            throw new IncorrectInputFileException("Incorrect lawn sizes: {" + sizeInput + "} expected : X Y");
+        try {
+            meta.setLawnWidth(Integer.parseInt(digits[0]));
+            meta.setLawnHeight(Integer.parseInt(digits[1]));
+        } catch (NumberFormatException exception) {
+            throw new IncorrectInputFileException(
+                    "Lawn size should be value of integer. Original error:{" + exception.getMessage() + "}"
+            );
+        }
     }
 
     private void parseMowerInfo(Meta meta, StringTokenizer tokenizer) {
@@ -37,8 +46,22 @@ public class InputParser {
 
             String[] digits = positionToken.split(" ");
 
-            Point position = Point.of(Integer.parseInt(digits[0]), Integer.parseInt(digits[1]));
+            if (digits.length != 3)
+                throw new IncorrectInputFileException(
+                        "Incorrect mower initial state: {" + positionToken + "} expected : X Y N"
+                );
+
+            Point position;
+            try {
+                position = Point.of(Integer.parseInt(digits[0]), Integer.parseInt(digits[1]));
+            } catch (NumberFormatException exception) {
+                throw new IncorrectInputFileException(
+                        "Mower position should be value of integer. Original error:{" + exception.getMessage() + "}"
+                );
+            }
+
             Direction direction = Direction.valueOfKey(digits[2]);
+
             List<Command> commands = parseCommands(commandsToken.toCharArray());
 
             result.add(new MowerMeta(position, direction, commands));
@@ -56,6 +79,6 @@ public class InputParser {
 
     private void validateInputs(int linesCount) {
         if ((linesCount - 1) % 2 != 0)
-            throw new IllegalStateException("Incorrect input files");
+            throw new IncorrectInputFileException("Input file has incorrect amount of lines");
     }
 }
